@@ -1,0 +1,32 @@
+identity:
+  name: "get_payment_link_orders"
+  author: "karthik_vyas"
+  label:
+    en_US: "Get Payment Link Orders"
+description:
+  human:
+    en_US: "Use this tool to view all order details for a payment link."
+  llm: "Use this tool to view all order details for a payment link."
+parameters:
+  - name: link_id
+    type: string
+    required: true
+    label:
+      en_US: Payment Link ID
+    human_description:
+      en_US: "The payment link ID for which you want to view the order details"
+    llm_description: "The payment link ID for which you want to view the order details"
+    form: llm
+  - name: status
+    type: string
+    required: false
+    default: "PAID"
+    label:
+      en_US: Order Status Filter
+    human_description:
+      en_US: "Status of orders to fetch. Options: ALL (all orders), PAID (only paid orders). Default: PAID"
+    llm_description: "Status of orders to fetch. ALL or PAID. Default: PAID"
+    form: llm
+extra:
+  python:
+    source: tools/get_payment_link_orders.py

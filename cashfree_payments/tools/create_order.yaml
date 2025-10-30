@@ -1,0 +1,140 @@
+identity:
+  name: "create_order"
+  author: "karthik_vyas"
+  label:
+    en_US: "Create Order"
+description:
+  human:
+    en_US: "Use this tool to create a new order with Cashfree Payment Gateway to collect payment."
+  llm: "Use this tool to create a new order with Cashfree Payment Gateway to collect payment."
+parameters:
+  - name: order_amount
+    type: number
+    required: true
+    label:
+      en_US: Order Amount
+    human_description:
+      en_US: "Bill amount for the order. Provide up to two decimals (e.g., 10.15 means Rs 10 and 15 paisa). Minimum value: 1"
+    llm_description: "Bill amount for the order. Provide up to two decimals. Minimum value: 1"
+    form: llm
+  - name: order_currency
+    type: string
+    required: true
+    default: "INR"
+    label:
+      en_US: Order Currency
+    human_description:
+      en_US: "Currency for the order. Default is INR if left empty"
+    llm_description: "Currency for the order. Default is INR"
+    form: llm
+  - name: customer_id
+    type: string
+    required: true
+    label:
+      en_US: Customer ID
+    human_description:
+      en_US: "Unique identifier for the customer in your system"
+    llm_description: "Unique identifier for the customer in your system"
+    form: llm
+  - name: customer_email
+    type: string
+    required: true
+    label:
+      en_US: Customer Email
+    human_description:
+      en_US: "Customer's email address"
+    llm_description: "Customer's email address"
+    form: llm
+  - name: customer_phone
+    type: string
+    required: true
+    label:
+      en_US: Customer Phone
+    human_description:
+      en_US: "Customer's phone number"
+    llm_description: "Customer's phone number"
+    form: llm
+  - name: customer_name
+    type: string
+    required: true
+    label:
+      en_US: Customer Name
+    human_description:
+      en_US: "Customer's full name"
+    llm_description: "Customer's full name"
+    form: llm
+  - name: order_id
+    type: string
+    required: false
+    label:
+      en_US: Order ID
+    human_description:
+      en_US: "Order identifier present in your system. Alphanumeric, '_' and '-' only. Length: 3-45 characters. If not provided, Cashfree will generate one"
+    llm_description: "Order identifier in your system. Alphanumeric, '_' and '-' only. Length: 3-45 characters"
+    form: llm
+  - name: order_note
+    type: string
+    required: false
+    label:
+      en_US: Order Note
+    human_description:
+      en_US: "Order note for reference. Length: 3-200 characters"
+    llm_description: "Order note for reference"
+    form: llm
+  - name: return_url
+    type: string
+    required: false
+    label:
+      en_US: Return URL
+    human_description:
+      en_US: "URL to redirect customer after payment completion. Maximum 250 characters"
+    llm_description: "URL to redirect customer after payment completion"
+    form: llm
+  - name: notify_url
+    type: string
+    required: false
+    label:
+      en_US: Notify URL
+    human_description:
+      en_US: "Webhook URL for server-to-server communication. Must be HTTPS. Maximum 250 characters"
+    llm_description: "Webhook URL for server-to-server communication"
+    form: llm
+  - name: payment_methods
+    type: string
+    required: false
+    label:
+      en_US: Payment Methods
+    human_description:
+      en_US: "Comma-separated payment modes: cc,dc,ccc,ppc,nb,upi,paypal,app,paylater,cardlessemi,dcemi,ccemi,banktransfer. Leave blank for all methods"
+    llm_description: "Comma-separated payment modes allowed for this order"
+    form: llm
+  - name: order_expiry_time
+    type: string
+    required: false
+    label:
+      en_US: Order Expiry Time
+    human_description:
+      en_US: "ISO 8601 format timestamp when order expires (e.g., 2021-07-02T10:20:12+05:30)"
+    llm_description: "ISO 8601 format timestamp when order expires"
+    form: llm
+  - name: customer_bank_account_number
+    type: string
+    required: false
+    label:
+      en_US: Customer Bank Account Number
+    human_description:
+      en_US: "Customer's bank account number (optional)"
+    llm_description: "Customer's bank account number"
+    form: llm
+  - name: customer_bank_ifsc
+    type: string
+    required: false
+    label:
+      en_US: Customer Bank IFSC
+    human_description:
+      en_US: "Customer's bank IFSC code (optional)"
+    llm_description: "Customer's bank IFSC code"
+    form: llm
+extra:
+  python:
+    source: tools/create_order.py

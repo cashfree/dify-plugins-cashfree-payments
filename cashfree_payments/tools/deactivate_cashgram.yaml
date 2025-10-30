@@ -1,0 +1,25 @@
+identity:
+  name: "deactivate_cashgram"
+  author: "karthik_vyas"
+  label:
+    en_US: "Deactivate Cashgram"
+description:
+  human:
+    en_US: "Deactivate an active Cashgram using Cashfree Payout API"
+  llm: "Use this tool to deactivate an active Cashgram with Cashfree Payout API. Once deactivated, the Cashgram link will no longer be valid and cannot be used to claim money."
+
+parameters:
+  - name: cashgramId
+    type: string
+    required: true
+    label:
+      en_US: Cashgram ID
+    human_description:
+      en_US: "Unique identifier of the Cashgram to be deactivated"
+    llm_description: "Unique identifier of the Cashgram to be deactivated"
+    form: llm
+    llm_placeholder: Enter the Cashgram ID to deactivate (e.g., "CASHGRAM_123")
+    default: ""
+extra:
+  python:
+    source: tools/deactivate_cashgram.py

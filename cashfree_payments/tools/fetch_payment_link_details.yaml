@@ -1,0 +1,22 @@
+identity:
+  name: "fetch_payment_link_details"
+  author: "alok_kumar"
+  label:
+    en_US: "Fetch Payment Link Details"
+description:
+  human:
+    en_US: "Use this tool to view all details and status of a payment link."
+  llm: "Use this tool to view all details and status of a payment link."
+parameters:
+  - name: link_id
+    type: string
+    required: true
+    label:
+      en_US: Payment Link ID
+    human_description:
+      en_US: "The ID of the payment link to fetch details for"
+    llm_description: "The ID of the payment link to fetch details for"
+    form: llm
+extra:
+  python:
+    source: tools/fetch_payment_link_details.py

@@ -1,0 +1,22 @@
+identity:
+  name: "get_order"
+  author: "alok_kumar"
+  label:
+    en_US: "Get Order"
+description:
+  human:
+    en_US: "Use this tool to fetch the order that was created at Cashfree."
+  llm: "Use this tool to fetch the order that was created at Cashfree."
+parameters:
+  - name: order_id
+    type: string
+    required: true
+    label:
+      en_US: Order ID
+    human_description:
+      en_US: "The ID of the order to fetch details for"
+    llm_description: "The ID of the order to fetch details for"
+    form: llm
+extra:
+  python:
+    source: tools/get_order.py

@@ -1,0 +1,87 @@
+identity:
+  name: "create_cashgram"
+  author: "karthik_vyas"
+  label:
+    en_US: "Create Cashgram"
+description:
+  human:
+    en_US: "Create a Cashgram using Cashfree Payout API to send money to contacts"
+  llm: "Use this tool to create a Cashgram with Cashfree Payout API. Cashgrams allow you to send money to contacts via a secure link that can be shared through phone or email."
+
+parameters:
+  - name: cashgramId
+    type: string
+    required: true
+    label:
+      en_US: Cashgram ID
+    human_description:
+      en_US: "Unique identifier for the Cashgram. Alphanumeric, underscore (_), and hyphen (-) allowed. Maximum 35 characters"
+    llm_description: "Unique identifier for the Cashgram. Alphanumeric, underscore, and hyphen allowed. Maximum 35 characters"
+    form: llm
+  - name: amount
+    type: number
+    required: true
+    label:
+      en_US: Amount
+    human_description:
+      en_US: "Amount to be transferred. Must be >= 1.00"
+    llm_description: "Amount to be transferred. Must be >= 1.00"
+    form: llm
+  - name: name
+    type: string
+    required: true
+    label:
+      en_US: Contact Name
+    human_description:
+      en_US: "Name of the contact who will receive the Cashgram"
+    llm_description: "Name of the contact who will receive the Cashgram"
+    form: llm
+  - name: phone
+    type: string
+    required: true
+    label:
+      en_US: Contact Phone
+    human_description:
+      en_US: "Phone number of the contact"
+    llm_description: "Phone number of the contact"
+    form: llm
+  - name: linkExpiry
+    type: string
+    required: true
+    label:
+      en_US: Link Expiry Date
+    human_description:
+      en_US: "Date to expire the cashgram link. Format: YYYY/MM/DD. Maximum 30 days from creation date"
+    llm_description: "Date to expire the cashgram link in YYYY/MM/DD format. Maximum 30 days from creation"
+    form: llm
+  - name: email
+    type: string
+    required: false
+    label:
+      en_US: Contact Email
+    human_description:
+      en_US: "Email address of the contact (optional)"
+    llm_description: "Email address of the contact"
+    form: llm
+  - name: remarks
+    type: string
+    required: false
+    label:
+      en_US: Remarks
+    human_description:
+      en_US: "Additional remarks or notes for the Cashgram (optional)"
+    llm_description: "Additional remarks or notes for the Cashgram"
+    form: llm
+  - name: notifyCustomer
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: Notify Customer
+    human_description:
+      en_US: "If true, a link will be sent to customer's phone and email"
+    llm_description: "If true, a link will be sent to customer's phone and email"
+    form: llm
+extra:
+  python:
+    source: tools/create_cashgram.py

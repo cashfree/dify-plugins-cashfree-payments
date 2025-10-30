@@ -1,0 +1,22 @@
+identity:
+  name: "get_order_refunds"
+  author: "karthik_vyas"
+  label:
+    en_US: "Get Order Refunds"
+description:
+  human:
+    en_US: "Use this tool to fetch all refunds processed against an order."
+  llm: "Use this tool to fetch all refunds processed against an order."
+parameters:
+  - name: order_id
+    type: string
+    required: true
+    label:
+      en_US: Order ID
+    human_description:
+      en_US: "The ID which uniquely identifies your order for which you want to fetch refunds"
+    llm_description: "The ID which uniquely identifies your order for which you want to fetch refunds"
+    form: llm
+extra:
+  python:
+    source: tools/get_order_refunds.py

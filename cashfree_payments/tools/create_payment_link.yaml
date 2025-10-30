@@ -1,0 +1,190 @@
+identity:
+  name: "create_payment_link"
+  author: "karthik_vyas"
+  label:
+    en_US: "Create Payment Link"
+description:
+  human:
+    en_US: "Create a payment link with Cashfree Payment Gateway to collect payments from customers"
+  llm: "Use this tool to create a payment link with Cashfree Payment Gateway. Customers can use this link to make payments. The link can be shared via email, SMS, or any other communication channel."
+parameters:
+  - name: link_id
+    type: string
+    required: true
+    label:
+      en_US: Link ID
+    human_description:
+      en_US: "Unique identifier for the payment link. Alphanumeric and only '-' and '_' allowed. Maximum 50 characters"
+    llm_description: "Unique identifier for the payment link. Alphanumeric and only '-' and '_' allowed. Maximum 50 characters"
+    form: llm
+  - name: link_amount
+    type: number
+    required: true
+    label:
+      en_US: Link Amount
+    human_description:
+      en_US: "Amount to be collected using this link. Provide up to two decimals for paise (e.g., 10.15)"
+    llm_description: "Amount to be collected using this link. Provide up to two decimals"
+    form: llm
+  - name: link_currency
+    type: string
+    required: true
+    default: "INR"
+    label:
+      en_US: Link Currency
+    human_description:
+      en_US: "Currency for the payment link. Default is INR"
+    llm_description: "Currency for the payment link. Default is INR"
+    form: llm
+  - name: link_purpose
+    type: string
+    required: true
+    label:
+      en_US: Link Purpose
+    human_description:
+      en_US: "Brief description for which payment must be collected. Shown to customer. Maximum 500 characters"
+    llm_description: "Brief description for which payment must be collected. Maximum 500 characters"
+    form: llm
+  - name: customer_phone
+    type: string
+    required: true
+    label:
+      en_US: Customer Phone
+    human_description:
+      en_US: "Customer's phone number"
+    llm_description: "Customer's phone number"
+    form: llm
+  - name: customer_email
+    type: string
+    required: false
+    label:
+      en_US: Customer Email
+    human_description:
+      en_US: "Customer's email address (optional)"
+    llm_description: "Customer's email address"
+    form: llm
+  - name: customer_name
+    type: string
+    required: false
+    label:
+      en_US: Customer Name
+    human_description:
+      en_US: "Customer's full name (optional)"
+    llm_description: "Customer's full name"
+    form: llm
+  - name: link_partial_payments
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: Allow Partial Payments
+    human_description:
+      en_US: "If true, customer can make partial payments for the link"
+    llm_description: "If true, customer can make partial payments for the link"
+    form: llm
+  - name: link_minimum_partial_amount
+    type: number
+    required: false
+    label:
+      en_US: Minimum Partial Amount
+    human_description:
+      en_US: "Minimum amount in first installment if partial payments are enabled. Must be less than link_amount"
+    llm_description: "Minimum amount in first installment if partial payments are enabled"
+    form: llm
+  - name: link_expiry_time
+    type: string
+    required: false
+    label:
+      en_US: Link Expiry Time
+    human_description:
+      en_US: "ISO 8601 format timestamp when link expires (e.g., 2021-07-02T10:20:12+05:30). Default is 30 days"
+    llm_description: "ISO 8601 format timestamp when link expires"
+    form: llm
+  - name: send_sms
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: Send SMS Notification
+    human_description:
+      en_US: "If true, Cashfree will send SMS to customer_phone"
+    llm_description: "If true, Cashfree will send SMS to customer_phone"
+    form: llm
+  - name: send_email
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: Send Email Notification
+    human_description:
+      en_US: "If true, Cashfree will send email to customer_email"
+    llm_description: "If true, Cashfree will send email to customer_email"
+    form: llm
+  - name: link_auto_reminders
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: Auto Reminders
+    human_description:
+      en_US: "If true, reminders will be sent to customers for collecting payments"
+    llm_description: "If true, reminders will be sent to customers for collecting payments"
+    form: llm
+  - name: notify_url
+    type: string
+    required: false
+    label:
+      en_US: Notify URL
+    human_description:
+      en_US: "Webhook URL for server-to-server communication. Must be HTTPS"
+    llm_description: "Webhook URL for server-to-server communication"
+    form: llm
+  - name: return_url
+    type: string
+    required: false
+    label:
+      en_US: Return URL
+    human_description:
+      en_US: "URL to redirect user after payment completion. Maximum 250 characters"
+    llm_description: "URL to redirect user after payment completion"
+    form: llm
+  - name: payment_methods
+    type: string
+    required: false
+    label:
+      en_US: Payment Methods
+    human_description:
+      en_US: "Comma-separated payment modes: cc,dc,ccc,ppc,nb,upi,paypal,app. Leave blank for all methods"
+    llm_description: "Comma-separated payment modes allowed for this link"
+    form: llm
+  - name: upi_intent
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: UPI Intent
+    human_description:
+      en_US: "If true, link will directly open UPI Intent flow on mobile"
+    llm_description: "If true, link will directly open UPI Intent flow on mobile"
+    form: llm
+  - name: customer_bank_account_number
+    type: string
+    required: false
+    label:
+      en_US: Customer Bank Account Number
+    human_description:
+      en_US: "Customer's bank account number (optional)"
+    llm_description: "Customer's bank account number"
+    form: llm
+  - name: customer_bank_ifsc
+    type: string
+    required: false
+    label:
+      en_US: Customer Bank IFSC
+    human_description:
+      en_US: "Customer's bank IFSC code (optional)"
+    llm_description: "Customer's bank IFSC code"
+    form: llm
+extra:
+  python:
+    source: tools/create_payment_link.py

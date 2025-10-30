@@ -1,0 +1,22 @@
+identity:
+  name: "cancel_payment_link"
+  author: "karthik_vyas"
+  label:
+    en_US: Cancel Payment Link
+description:
+  human:
+    en_US: Cancel an active payment link by link ID using Cashfree Payment Gateway API
+  llm: This tool allows users to cancel an active payment link using Cashfree Payment Gateway API. The tool requires a valid link_id that represents the payment link to be cancelled. Only active payment links can be cancelled. Once cancelled, the payment link cannot be used for payments and cannot be reactivated.
+
+parameters:
+  - name: link_id
+    type: string
+    required: true
+    label:
+      en_US: Link ID
+    human_description:
+      en_US: The unique identifier of the payment link to be cancelled
+    llm_description: A unique string identifier (1-50 characters) that identifies the payment link to be cancelled. Can contain alphanumeric characters, underscores, and hyphens only.
+    form: llm
+    llm_placeholder: Enter the link ID to cancel (e.g., "order_link_123")
+    default: ""

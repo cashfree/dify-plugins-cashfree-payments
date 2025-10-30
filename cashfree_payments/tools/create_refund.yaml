@@ -1,0 +1,59 @@
+identity:
+  name: "create_refund"
+  author: "karthik_vyas"
+  label:
+    en_US: "Create Refund"
+description:
+  human:
+    en_US: "Use this tool to initiate refunds for successful payments. Refunds can only be initiated within six months of the original transaction."
+  llm: "Use this tool to initiate refunds for successful payments. Refunds can only be initiated within six months of the original transaction."
+parameters:
+  - name: order_id
+    type: string
+    required: true
+    label:
+      en_US: Order ID
+    human_description:
+      en_US: "The ID which uniquely identifies your order for which refund is being created"
+    llm_description: "The ID which uniquely identifies your order for which refund is being created"
+    form: llm
+  - name: refund_amount
+    type: number
+    required: true
+    label:
+      en_US: Refund Amount
+    human_description:
+      en_US: "Amount to be refunded. Should be lesser than or equal to the transaction amount. Decimals allowed"
+    llm_description: "Amount to be refunded. Should be lesser than or equal to the transaction amount"
+    form: llm
+  - name: refund_id
+    type: string
+    required: true
+    label:
+      en_US: Refund ID
+    human_description:
+      en_US: "A unique ID to associate the refund with. Provide alphanumeric values. Length: 3-40 characters"
+    llm_description: "A unique ID to associate the refund with. Alphanumeric values, 3-40 characters"
+    form: llm
+  - name: refund_note
+    type: string
+    required: false
+    label:
+      en_US: Refund Note
+    human_description:
+      en_US: "A refund note for your reference. Length: 3-100 characters"
+    llm_description: "A refund note for your reference"
+    form: llm
+  - name: refund_speed
+    type: string
+    required: false
+    default: "STANDARD"
+    label:
+      en_US: Refund Speed
+    human_description:
+      en_US: "Speed at which the refund is processed. STANDARD (default) or INSTANT"
+    llm_description: "Speed at which the refund is processed. STANDARD or INSTANT"
+    form: llm
+extra:
+  python:
+    source: tools/create_refund.py
