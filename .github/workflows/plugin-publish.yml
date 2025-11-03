@@ -138,6 +138,30 @@ jobs:
             Changes:
             - Updated plugin package file" || echo "PR already exists or creation skipped." # Handle cases where PR already exists
 
+         - name: Create GitHub Release with Package Asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Go back to the original repo directory
+          cd $GITHUB_WORKSPACE
+          
+          PACKAGE_NAME="${{ steps.get_basic_info.outputs.plugin_name }}-${{ steps.get_basic_info.outputs.version }}.difypkg"
+          TAG_NAME="v${{ steps.get_basic_info.outputs.version }}"
+          RELEASE_NAME="${{ steps.get_basic_info.outputs.plugin_name }} v${{ steps.get_basic_info.outputs.version }}"
+          
+          # Create or update the package file (since it was moved earlier)
+          $RUNNER_TEMP/bin/dify-plugin-linux-amd64 plugin package . -o "$PACKAGE_NAME"
+          
+          # Create release and upload asset
+          gh release create "$TAG_NAME" \
+            --title "$RELEASE_NAME" \
+            --notes "Release of ${{ steps.get_basic_info.outputs.plugin_name }} plugin version ${{ steps.get_basic_info.outputs.version }}" \
+            --draft=false \
+            --prerelease=false \
+            "$PACKAGE_NAME" || \
+          gh release upload "$TAG_NAME" "$PACKAGE_NAME" --clobber || \
+          echo "Release creation/upload failed or already exists"
+          
       - name: Print environment info # Kept for debugging
         run: |
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
