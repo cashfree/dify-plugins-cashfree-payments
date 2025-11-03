@@ -138,7 +138,7 @@ jobs:
             Changes:
             - Updated plugin package file" || echo "PR already exists or creation skipped." # Handle cases where PR already exists
 
-         - name: Create GitHub Release with Package Asset
+      - name: Create GitHub Release with Package Asset
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
