@@ -72,9 +72,8 @@ jobs:
       - name: Checkout target repo
         uses: actions/checkout@v3
         with:
-          # Use author variable for repository
-          repository: ${{steps.get_basic_info.outputs.author}}/dify-plugins
-          path: cashfreepayments
+          repository: langgenius/dify-plugins
+          path: dify-plugins
           token: ${{ secrets.PLUGIN_ACTION }}
           fetch-depth: 1 # Fetch only the last commit to speed up checkout
           persist-credentials: true # Persist credentials for subsequent git operations
@@ -130,7 +129,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PLUGIN_ACTION }} # Use the provided token for authentication
         run: |
           gh pr create \
-            --repo cashfree/dify-plugins \
+            --repo langgenius/dify-plugins \
             --head "$BRANCH_NAME" \
             --base main \
             --title "bump ${{ steps.get_basic_info.outputs.plugin_name }} plugin to version ${{ steps.get_basic_info.outputs.version }}" \
