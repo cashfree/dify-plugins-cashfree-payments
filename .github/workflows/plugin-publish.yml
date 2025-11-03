@@ -72,9 +72,8 @@ jobs:
       - name: Checkout target repo
         uses: actions/checkout@v3
         with:
-          # Use author variable for repository
-          repository: ${{steps.get_basic_info.outputs.author}}/dify-plugins
-          path: cashfreepayments
+          repository: langgenius/dify-plugins
+          path: dify-plugins
           token: ${{ secrets.PLUGIN_ACTION }}
           fetch-depth: 1 # Fetch only the last commit to speed up checkout
           persist-credentials: true # Persist credentials for subsequent git operations
@@ -121,6 +120,9 @@ jobs:
           git branch -a
           echo "Waiting for branch to sync..."
           sleep 10  # Wait 10 seconds for branch sync
+          
+          # Export branch name for next step
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
       - name: Create PR via GitHub API
         env:
@@ -128,10 +130,10 @@ jobs:
         run: |
           gh pr create \
             --repo langgenius/dify-plugins \
-            --head "cashfree:bump-cashfree_payments-plugin-${{ steps.get_basic_info.outputs.version }}" \
+            --head "$BRANCH_NAME" \
             --base main \
-            --title "bump bump-cashfree_payments-plugin plugin to version ${{ steps.get_basic_info.outputs.version }}" \
-            --body "bump bump-cashfree_payments-plugin plugin package to version ${{ steps.get_basic_info.outputs.version }}
+            --title "bump ${{ steps.get_basic_info.outputs.plugin_name }} plugin to version ${{ steps.get_basic_info.outputs.version }}" \
+            --body "bump ${{ steps.get_basic_info.outputs.plugin_name }} plugin package to version ${{ steps.get_basic_info.outputs.version }}
 
             Changes:
             - Updated plugin package file" || echo "PR already exists or creation skipped." # Handle cases where PR already exists
