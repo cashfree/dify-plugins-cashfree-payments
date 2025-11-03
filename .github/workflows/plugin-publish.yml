@@ -128,10 +128,10 @@ jobs:
         run: |
           gh pr create \
             --repo langgenius/dify-plugins \
-            --head "cashfree:cashfreepayments-${{ steps.get_basic_info.outputs.version }}" \
+            --head "cashfree:bump-cashfree_payments-plugin-${{ steps.get_basic_info.outputs.version }}" \
             --base main \
-            --title "bump cashfreepayments plugin to version ${{ steps.get_basic_info.outputs.version }}" \
-            --body "bump cashfreepayments plugin package to version ${{ steps.get_basic_info.outputs.version }}
+            --title "bump bump-cashfree_payments-plugin plugin to version ${{ steps.get_basic_info.outputs.version }}" \
+            --body "bump bump-cashfree_payments-plugin plugin package to version ${{ steps.get_basic_info.outputs.version }}
 
             Changes:
             - Updated plugin package file" || echo "PR already exists or creation skipped." # Handle cases where PR already exists
