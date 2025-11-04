@@ -2,6 +2,7 @@ from typing import Any
 
 from dify_plugin import ToolProvider
 from dify_plugin.errors.tool import ToolProviderCredentialValidationError
+from auth_utils import parse_public_key
 
 
 class CashfreePaymentsProvider(ToolProvider):
@@ -11,7 +12,7 @@ class CashfreePaymentsProvider(ToolProvider):
         Validate credentials for Cashfree Payments
         Supports two authentication methods:
         1. Client Credentials (client_id + client_secret)
-        2. Authorization Bearer Token
+        2. Public Key Signature (client_id + client_secret + public_key)
         """
         # Environment validation (required for both auth methods)
         if not credentials.get("cashfree_environment"):
@@ -31,13 +32,23 @@ class CashfreePaymentsProvider(ToolProvider):
                 if not credentials.get(field):
                     raise ToolProviderCredentialValidationError(f"Missing required field for client credentials: {field}")
                     
-        elif auth_method == "bearer_token":
-            # Validate bearer token
-            if not credentials.get("bearer_token"):
-                raise ToolProviderCredentialValidationError("Missing required field for bearer token authentication: bearer_token")
+        elif auth_method == "public_key":
+            # Validate public key signature requirements
+            required_fields = ["cashfree_client_id", "cashfree_client_secret", "cashfree_public_key"]
+            
+            for field in required_fields:
+                if not credentials.get(field):
+                    raise ToolProviderCredentialValidationError(f"Missing required field for public key signature: {field}")
+            
+            # Validate public key format using updated parser
+            try:
+                public_key_content = credentials.get("cashfree_public_key")
+                parse_public_key(public_key_content)
+            except Exception as e:
+                raise ToolProviderCredentialValidationError(f"Invalid public key format: {str(e)}")
                 
         else:
-            raise ToolProviderCredentialValidationError("Invalid authentication method. Must be 'client_credentials' or 'bearer_token'")
+            raise ToolProviderCredentialValidationError("Invalid authentication method. Must be 'client_credentials' or 'public_key'")
         
         # All validations passed
 

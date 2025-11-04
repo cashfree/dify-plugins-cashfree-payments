@@ -7,6 +7,7 @@ from typing import Any, Dict
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from auth_utils import get_auth_headers
 
 class CancelPaymentLinkTool(Tool):
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
@@ -45,7 +46,6 @@ class CancelPaymentLinkTool(Tool):
         try:
             credentials = self.runtime.credentials
             environment = credentials.get("cashfree_environment", "sandbox")
-            api_version = credentials.get("cashfree_api_version", "2025-01-01")
             auth_method = credentials.get("auth_method", "client_credentials")
             
             # Validate that we have the required credentials for the selected auth method
@@ -54,9 +54,11 @@ class CancelPaymentLinkTool(Tool):
                     response_data["message"] = "Fatal Error: Cashfree client credentials (Client ID/Secret) are missing."
                     yield self.create_json_message(response_data)
                     return
-            elif auth_method == "bearer_token":
-                if not credentials.get("bearer_token"):
-                    response_data["message"] = "Fatal Error: Cashfree bearer token is missing."
+            elif auth_method == "public_key":
+                required_fields = ["cashfree_client_id", "cashfree_client_secret", "cashfree_public_key"]
+                missing_fields = [field for field in required_fields if not credentials.get(field)]
+                if missing_fields:
+                    response_data["message"] = f"Fatal Error: Missing required fields for public key auth: {', '.join(missing_fields)}"
                     yield self.create_json_message(response_data)
                     return
                     
@@ -69,19 +71,15 @@ class CancelPaymentLinkTool(Tool):
         base_url = "https://api.cashfree.com/pg" if environment == "production" else "https://sandbox.cashfree.com/pg"
         api_url = f"{base_url}/links/{link_id}/cancel"
         
-        # Build authentication headers based on auth method
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "x-api-version": api_version,
-            "x-request-id": str(uuid.uuid4())
-        }
-        
-        if auth_method == "client_credentials":
-            headers["x-client-id"] = credentials.get("cashfree_client_id")
-            headers["x-client-secret"] = credentials.get("cashfree_client_secret")
-        elif auth_method == "bearer_token":
-            headers["Authorization"] = f"Bearer {credentials.get('bearer_token')}"
+        # Get authentication headers from provider
+        try:
+            headers = get_auth_headers(credentials, include_api_version=True, is_payout_api=False)
+            headers["Accept"] = "application/json"
+            headers["x-request-id"] = str(uuid.uuid4())
+        except Exception as e:
+            response_data["message"] = f"Fatal Error: Authentication failed: {str(e)}"
+            yield self.create_json_message(response_data)
+            return
 
         # --- 4. Execute API Call (POST request) ---
         try:
